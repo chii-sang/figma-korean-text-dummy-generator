@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-commerce Dummy Text</title>
+  <style>
+    :root {
+      font-family: 'Inter', 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --bg: #0f1114;
+      --panel: #191b1f;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f6f7fb;
+      --muted: rgba(255, 255, 255, 0.05);
+      --accent: #7dd3fc;
+      --accent-strong: #38bdf8;
+      --danger: #ff6b81;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 18px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 4px 0 0;
+      color: rgba(246, 247, 251, 0.7);
+      font-size: 12px;
+    }
+
+    section {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      background: var(--panel);
+    }
+
+    .selection {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .selection-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.1s ease, opacity 0.15s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: rgba(246, 247, 251, 0.65);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #04121b;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .type-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .type-card input {
+      display: none;
+    }
+
+    .type-card strong {
+      font-size: 13px;
+    }
+
+    .type-card span {
+      font-size: 11px;
+      color: rgba(246, 247, 251, 0.65);
+    }
+
+    .type-card:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(125, 211, 252, 0.1);
+    }
+
+    textarea {
+      width: 100%;
+      margin-top: 12px;
+      min-height: 90px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      padding: 12px;
+      font-size: 13px;
+      resize: none;
+    }
+
+    .preview-meta {
+      margin-top: 6px;
+      font-size: 11px;
+      color: rgba(246, 247, 251, 0.65);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(246, 247, 251, 0.55);
+    }
+
+    .status {
+      margin-top: 10px;
+      min-height: 18px;
+      font-size: 12px;
+      color: rgba(246, 247, 251, 0.7);
+    }
+
+    .status.success {
+      color: var(--accent);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>커머스 더미 텍스트</h1>
+    <p>상품명 · 옵션명 · 가격을 랜덤으로 만들어 선택한 텍스트에 바로 채워 넣습니다.</p>
+  </header>
+
+  <section class="selection">
+    <div>
+      <strong>선택 상태</strong>
+      <div id="selectionSummary" class="selection-pill">선택된 텍스트 없음</div>
+    </div>
+    <button class="ghost" id="refreshSelection">새로고침</button>
+  </section>
+
+  <section>
+    <div class="section-title">
+      <strong>채울 항목</strong>
+    </div>
+    <div class="type-grid" id="typeGrid">
+      <label class="type-card">
+        <input type="radio" name="textType" value="product" checked />
+        <strong>상품명</strong>
+        <span>브랜드 + 특징 + 제품</span>
+      </label>
+      <label class="type-card">
+        <input type="radio" name="textType" value="option" />
+        <strong>옵션명</strong>
+        <span>색상·사이즈·구성 등</span>
+      </label>
+      <label class="type-card">
+        <input type="radio" name="textType" value="price" />
+        <strong>가격</strong>
+        <span>세 자리 콤마 + 원</span>
+      </label>
+    </div>
+
+    <textarea id="previewField" readonly></textarea>
+    <div class="preview-meta">
+      <span id="previewLabel">상품명 예시</span>
+      <span id="charCount">0자</span>
+    </div>
+
+    <div class="actions">
+      <button class="ghost" id="newPreview">새 예시</button>
+      <button class="primary" id="fillButton">선택된 텍스트 채우기</button>
+    </div>
+    <p class="hint">선택된 각 텍스트 레이어마다 서로 다른 문구가 적용됩니다.</p>
+    <div class="status" id="statusMessage"></div>
+  </section>
+
+  <script>
+    const elements = {
+      preview: document.getElementById('previewField'),
+      previewLabel: document.getElementById('previewLabel'),
+      charCount: document.getElementById('charCount'),
+      selectionSummary: document.getElementById('selectionSummary'),
+      status: document.getElementById('statusMessage')
+    };
+
+    const typeInputs = document.querySelectorAll('input[name="textType"]');
+
+    document.getElementById('refreshSelection').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'ui-ready' } }, '*');
+    });
+
+    typeInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        requestPreview();
+        updatePreviewLabel();
+      });
+    });
+
+    document.getElementById('newPreview').addEventListener('click', () => {
+      requestPreview();
+    });
+
+    document.getElementById('fillButton').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'fill-selection', payload: { textType: getSelectedType() } } }, '*');
+    });
+
+    function getSelectedType() {
+      return Array.from(typeInputs).find((input) => input.checked)?.value ?? 'product';
+    }
+
+    function requestPreview() {
+      parent.postMessage({ pluginMessage: { type: 'request-preview', payload: { textType: getSelectedType() } } }, '*');
+    }
+
+    function updatePreview(content = '') {
+      elements.preview.value = content;
+      elements.charCount.textContent = `${content.replace(/\s/g, '').length}자`;
+    }
+
+    function updatePreviewLabel() {
+      const type = getSelectedType();
+      const labelMap = {
+        product: '상품명 예시',
+        option: '옵션명 예시',
+        price: '가격 예시'
+      };
+      elements.previewLabel.textContent = labelMap[type] ?? '예시';
+    }
+
+    function setStatus(message, variant = '') {
+      elements.status.textContent = message;
+      elements.status.className = `status ${variant}`;
+      if (message) {
+        setTimeout(() => {
+          elements.status.textContent = '';
+          elements.status.className = 'status';
+        }, 2200);
+      }
+    }
+
+    window.onmessage = (event) => {
+      const { type, payload } = event.data.pluginMessage || {};
+
+      if (type === 'selection-update') {
+        const { textLayers, totalLayers } = payload;
+        elements.selectionSummary.textContent = textLayers
+          ? `텍스트 ${textLayers} / 전체 ${totalLayers}`
+          : '선택된 텍스트 없음';
+      }
+
+      if (type === 'preview-text') {
+        if (!payload || payload.textType !== getSelectedType()) {
+          return;
+        }
+        updatePreview(payload.text ?? '');
+        elements.charCount.textContent = `${(payload.text ?? '').replace(/\s/g, '').length}자`;
+      }
+
+      if (type === 'fill-result') {
+        if (payload?.status === 'ok') {
+          setStatus(`텍스트 ${payload.appliedCount ?? 0}개 적용 완료`, 'success');
+        } else if (payload?.reason === 'no-selection') {
+          setStatus('텍스트 레이어를 먼저 선택하세요.', 'error');
+        } else {
+          setStatus('적용 중 오류가 발생했습니다.', 'error');
+        }
+      }
+    };
+
+    updatePreviewLabel();
+    requestPreview();
+    parent.postMessage({ pluginMessage: { type: 'ui-ready' } }, '*');
+  </script>
+</body>
+
+</html>
