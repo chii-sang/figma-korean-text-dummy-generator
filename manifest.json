@@ -1,0 +1,20 @@
+{
+  "name": "Korean Dummy Text Generator",
+  "id": "korean-dummy-text-generator",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": [
+    "figma",
+    "figjam"
+  ],
+  "capabilities": [],
+  "enableProposedApi": false,
+  "parameters": [],
+  "menu": [
+    {
+      "name": "한글 더미 텍스트 패널 열기",
+      "command": "open"
+    }
+  ]
+}
